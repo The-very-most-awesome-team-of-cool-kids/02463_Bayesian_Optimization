@@ -10,3 +10,4 @@ data = pd.read_csv("wine.data",names=col_Names)
 print(data)
 
 # den her kommentar er til for at se om det her lort fungerer
+# endnu en fucking kommentar 
