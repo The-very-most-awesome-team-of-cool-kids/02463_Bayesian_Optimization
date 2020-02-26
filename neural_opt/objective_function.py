@@ -3,6 +3,7 @@ from torch_neural import *
 import torch.nn as nn
 import torch.optim as optim
 import time
+import os
 
 # possible cuda
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -42,7 +43,8 @@ def objective_function(x):
     # test model
     accuracy = test_net(net, testloader, save_path)
 
-    #print parameters:
+    # remove saved model
+    os.remove(save_path)
 
 
     return -accuracy

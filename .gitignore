@@ -130,3 +130,4 @@ dmypy.json
 
 #ignore data
 data/cifar-10-python.tar.gz
+data/
