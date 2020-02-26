@@ -127,4 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#ignore data
 data/cifar-10-python.tar.gz
