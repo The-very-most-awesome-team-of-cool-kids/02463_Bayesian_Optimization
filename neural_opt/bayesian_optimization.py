@@ -3,6 +3,7 @@ import numpy as np
 import GPyOpt
 import random
 import time
+import pickle
 
 
 from mpl_toolkits.mplot3d import Axes3D
@@ -53,9 +54,22 @@ x_best = opt.X[np.argmin(opt.Y)]
 print(f"Best accuracy was obtained at {opt.fx_opt*-1} %")
 print("The best parameters obtained: learning rate=" + str(x_best[0]) + ", optimizer=" + str(optimizer_dict[x_best[1]]))
 
+# save 
+with open("neural_opt/opt_params.pkl", "wb") as f:
+    pickle.dump(opt, f)
+
+with open("neural_opt/opt_params_best.pkl", "rb") as f:
+    best_opt = pickle.load(f)
+
+if opt.fx_opt*-1 > best_opt.fx_opt*-1:
+    with open("neural_opt/opt_params_best.pkl", "wb") as f:
+        pickle.dump(opt, f)
+
+
 # plots
 # GPyOpt.plotting.plots_bo.plot_acquisition(opt)
-# GPyOpt.plotting.plots_bo.plot.convergence(opt)
+GPyOpt.plotting.plots_bo.plot_convergence(opt.X, opt.Y)
+plt.show()
 
 
 
