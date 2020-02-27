@@ -28,7 +28,6 @@ class Net(nn.Module):
             self.fc1 = nn.Linear(16 * 5 * 5, 120)
             self.fc2 = nn.Linear(120, 84)
             self.fc3 = nn.Linear(84, 10)
-
     def forward(self, x):
         x = x.to(device)
         x = self.pool(F.relu(self.conv1(x)))
@@ -38,6 +37,37 @@ class Net(nn.Module):
         x = F.relu(self.fc2(x))
         x = self.fc3(x)
         return x
+
+class Net2(nn.Module):
+    
+    def __init__(self):
+        
+        if device == 'cuda':
+            super(Net2, self).__init__()
+            self.conv1 = nn.Conv2d(3, 6, 5).cuda()
+            self.pool = nn.MaxPool2d(2, 2).cuda()
+            self.conv2 = nn.Conv2d(6, 16, 5).cuda()
+            self.fc1 = nn.Linear(16 * 5 * 5, 120).cuda()
+            self.fc2 = nn.Linear(120, 84).cuda()
+            self.fc3 = nn.Linear(84, 10).cuda()
+        else:
+            super(Net2, self).__init__()
+            self.conv1 = nn.Conv2d(3, 6, 5)
+            self.pool = nn.MaxPool2d(2, 2)
+            self.conv2 = nn.Conv2d(6, 16, 5)
+            self.fc1 = nn.Linear(16 * 5 * 5, 120)
+            self.fc2 = nn.Linear(120, 84)
+            self.fc3 = nn.Linear(84, 10)
+    def forward(self, x):
+        x = x.to(device)
+        x = self.pool(F.sigmoid(self.conv1(x)))
+        x = self.pool(F.sigmoid(self.conv2(x)))
+        x = x.view(-1, 16 * 5 * 5)
+        x = F.sigmoid(self.fc1(x))
+        x = F.sigmoid(self.fc2(x))
+        x = self.fc3(x)
+        return x
+
 
 def train_net(neural_net, trainloader, criterion, optimizer, save_path):
     """

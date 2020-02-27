@@ -14,14 +14,23 @@ trainloader, testloader, classes = data_load()
 #optimizer dict
 optimizer_dict = {0: "SGD", 1: "ADAM"}
 
+# activation function
+act_func_dict = {0: "Relu", 1: "Sigmoid"}
+
 def objective_function(x):
     save_path = './cifar_net.pth'
     criterion = nn.CrossEntropyLoss()
     
     params = x[0] 
 
-    # initialize neural network
-    net = Net()
+    #initialize neural network
+    if params[2] == 0:
+        net = Net()
+    elif params[2] == 1:
+        net = Net2()
+    #net = Net()
+    
+    
     net = net.to(device)
 
     # define training parameters
@@ -37,7 +46,8 @@ def objective_function(x):
 
     # train model
     print("-"*30)
-    print("Training started with parameters: learning rate: " + str(learning_rate) + ", optimizer: " + str(optimizer_dict[params[1]]))
+    print("Training started with parameters: learning rate: " + str(learning_rate) + 
+    ", optimizer: " + str(optimizer_dict[params[1]])+ ", activation function: "+ str(act_func_dict[params[2]]))
     train_net(net, trainloader, criterion, optimizer, save_path)
 
     # test model
