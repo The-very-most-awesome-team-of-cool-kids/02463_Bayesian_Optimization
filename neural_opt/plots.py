@@ -22,10 +22,15 @@ act_funcs = evaluations[0][:, 2]
 accuracies = np.array([-evaluations[1][i][0] for i in range(len(evaluations[1]))])
 
 # plot
-fig = plt.figure()
+# fig = plt.figure()
 
-plt.subplot(2,2, 1)
-plt.plot(learning_rates, accuracies)
+# plt.subplot(2,2, 1)
+# plt.plot(learning_rates, accuracies)
 
-plt.subplot(3,1,2)
-plt.plot(optimiz)
+# plt.subplot(3,1,2)
+# plt.plot(optimiz)
+print(np.arange(len(learning_rates)))
+print(learning_rates)
+
+plt.scatter(np.arange(len(learning_rates)), learning_rates)
+plt.show()
