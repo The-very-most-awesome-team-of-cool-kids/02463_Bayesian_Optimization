@@ -13,6 +13,10 @@ np.random.seed(seed)
 random.seed(seed)
 torch.manual_seed(seed)
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+
+
 # learning rate
 learning_rate = tuple(np.arange(0.0001,0.011 ,0.0001, dtype= np.float))
 #optimizer (SGD, Adam)
@@ -38,7 +42,7 @@ opt = GPyOpt.methods.BayesianOptimization(f = objective_function,   # function t
                                              )
 
 
-opt.acquisition.exploration_weight = 1
+opt.acquisition.exploration_weight = 0.3
 
 t_opt = time.time()
 opt.run_optimization(max_iter = 20) 
@@ -51,14 +55,14 @@ print(f"Best accuracy was obtained at {opt.fx_opt*-1} %")
 print("The best parameters obtained: learning rate=" + str(x_best[0]) + ", optimizer=" + str(optimizer_dict[x_best[1]]) + ", activation function=" + str(act_func_dict[x_best[2]]))
 
 # save 
-with open("neural_opt/opt_params.pkl", "wb") as f:
+with open("./opt_params.pkl", "wb") as f:
     pickle.dump(opt, f)
 
-with open("neural_opt/opt_params_best.pkl", "rb") as f:
+with open("./opt_params_best.pkl", "rb") as f:
     best_opt = pickle.load(f)
 
 if opt.fx_opt*-1 > best_opt.fx_opt*-1:
-    with open("neural_opt/opt_params_best.pkl", "wb") as f:
+    with open("./opt_params_best.pkl", "wb") as f:
         pickle.dump(opt, f)
 
 
@@ -67,5 +71,15 @@ if opt.fx_opt*-1 > best_opt.fx_opt*-1:
 GPyOpt.plotting.plots_bo.plot_convergence(opt.X, opt.Y*-1)
 plt.show()
 
+opt.plot_acquisition()
 
+ins = opt.get_evaluations()[1].flatten()
+outs = opt.get_evaluations()[0].flatten()
+
+
+
+#Hvads der sker i plots: 
+#BO
+#convergence viser distancen
+#mellem  hyperparametre (vektor) ved første gennemkærsel 
 
